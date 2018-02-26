@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace IdentityServer4.PhoneNumberAuth.Services
 {
@@ -9,7 +6,7 @@ namespace IdentityServer4.PhoneNumberAuth.Services
     {
         public Task<bool> SendAsync(string phoneNumber, string body)
         {
-            throw new NotImplementedException();
+	        return Task.FromResult(true);
         }
     }
 }

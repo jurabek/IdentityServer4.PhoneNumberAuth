@@ -1,39 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IdentityServer4.PhoneNumberAuth.Configuration;
+using IdentityServer4.PhoneNumberAuth.Data;
+using IdentityServer4.PhoneNumberAuth.Models;
+using IdentityServer4.PhoneNumberAuth.Services;
+using IdentityServer4.PhoneNumberAuth.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace IdentityServer4.PhoneNumberAuth
 {
-    public class Startup
-    {
-        private readonly IConfiguration _configuration;
+	public class Startup
+	{
+		private readonly IConfiguration _configuration;
 
-        public Startup(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+		public Startup(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+		
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddTransient<ISmsService, SmsService>();
+			services.AddDbContext<ApplicationDbContext>(options =>
+			{
+				options.UseSqlServer(_configuration["SqlServerConnectionString"]);
+			});
 
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddDefaultTokenProviders();
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
-        }
+			services.AddMvc();
+			services.AddIdentityServer(options =>
+				{
+					options.Events.RaiseErrorEvents = true;
+					options.Events.RaiseFailureEvents = true;
+				})
+				.AddExtensionGrantValidator<PhoneNumberTokenGrantValidator>()
+				.AddDeveloperSigningCredential()
+				.AddInMemoryApiResources(Config.GetApiResources())
+				.AddInMemoryIdentityResources(Config.GetIdentityResources())
+				.AddInMemoryClients(Config.GetClients())
+				.AddAspNetIdentity<ApplicationUser>();
+		}
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseMvc();
-        }
-    }
+			app.UseIdentityServer();
+			app.UseMvc();
+			app.UseMvcWithDefaultRoute();
+		}
+	}
 }
