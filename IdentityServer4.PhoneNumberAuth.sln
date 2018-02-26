@@ -7,6 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.PhoneNumber
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{71D7160C-62E4-48B6-A89C-2C087427DEF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{0D2696ED-82A7-4460-9A25-378018CA06ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleClient", "SampleClient\SampleClient.csproj", "{ECC898F5-2A79-4D23-B250-6E3F2079E425}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49B3B7E8-0A94-4907-A694-76BB883903EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CCF068A5-EECA-43F3-9C76-4FA7B9F30FB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.PhoneNumberAuth.IntegrationTests", "IdentityServer4.PhoneNumberAuth.IntegrationTests\IdentityServer4.PhoneNumberAuth.IntegrationTests.csproj", "{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +33,26 @@ Global
 		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D7160C-62E4-48B6-A89C-2C087427DEF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D7160C-62E4-48B6-A89C-2C087427DEF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D7160C-62E4-48B6-A89C-2C087427DEF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D7160C-62E4-48B6-A89C-2C087427DEF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECC898F5-2A79-4D23-B250-6E3F2079E425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECC898F5-2A79-4D23-B250-6E3F2079E425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECC898F5-2A79-4D23-B250-6E3F2079E425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECC898F5-2A79-4D23-B250-6E3F2079E425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616} = {49B3B7E8-0A94-4907-A694-76BB883903EE}
+		{ECC898F5-2A79-4D23-B250-6E3F2079E425} = {0D2696ED-82A7-4460-9A25-378018CA06ED}
+		{C2AFB7FD-39C9-4BDA-ABD6-59A4A9DC4125} = {CCF068A5-EECA-43F3-9C76-4FA7B9F30FB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {434B8072-F620-4AA8-997E-B1ACD00791AC}
