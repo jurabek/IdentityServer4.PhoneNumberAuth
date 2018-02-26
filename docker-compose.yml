@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  identityserver4.phonenumberauth:
+    image: identityserver4.phonenumberauth
+    build:
+      context: .
+      dockerfile: IdentityServer4.PhoneNumberAuth\Dockerfile

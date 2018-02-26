@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.PhoneNumberAuth", "IdentityServer4.PhoneNumberAuth\IdentityServer4.PhoneNumberAuth.csproj", "{51EBEAF5-CCD7-4027-A40C-4836C78DE3CA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51EBEAF5-CCD7-4027-A40C-4836C78DE3CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51EBEAF5-CCD7-4027-A40C-4836C78DE3CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51EBEAF5-CCD7-4027-A40C-4836C78DE3CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51EBEAF5-CCD7-4027-A40C-4836C78DE3CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE8B6A3B-2B2F-4E3D-807B-E408EE308616}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {434B8072-F620-4AA8-997E-B1ACD00791AC}
+	EndGlobalSection
+EndGlobal

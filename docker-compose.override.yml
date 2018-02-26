@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  identityserver4.phonenumberauth:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+networks:
+  default:
+    external:
+      name: nat
