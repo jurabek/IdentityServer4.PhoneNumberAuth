@@ -45,13 +45,14 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
 
 			var user = await GetUser(model);
 			var response = await SendSmsRequet(model, user);
+
 			if (!response.Result)
 			{
 				return BadRequest("Sending sms failed");
 			}
 
 			var resendToken = await _dataProtectorTokenProvider.GenerateAsync("resend_token", _userManager, user);
-			var body = GetBody(response, resendToken);
+			var body = GetBody(response.VerifyToken, resendToken);
 
 			return Accepted(body);
 		}
@@ -78,7 +79,7 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
             }
 
             var newResendToken = await _dataProtectorTokenProvider.GenerateAsync("resend_token", _userManager, user);
-			var body = GetBody(response, newResendToken);
+			var body = GetBody(response.VerifyToken, newResendToken);
 			return Accepted(body);
         }
 
@@ -94,18 +95,20 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
             return user;
         }
 
-        private async Task<(string Token, bool Result)> SendSmsRequet(PhoneLoginViewModel model, ApplicationUser user)
+        private async Task<(string VerifyToken, bool Result)> SendSmsRequet(PhoneLoginViewModel model, ApplicationUser user)
         {
-            var token = await _phoneNumberTokenProvider.GenerateAsync("verify_number", _userManager, user);
-            var result = await _smsService.SendAsync(model.PhoneNumber, $"Your login verification code is: {token}");
-            return (token, result);
+            var verifyToken = await _phoneNumberTokenProvider.GenerateAsync("verify_number", _userManager, user);
+            var result = await _smsService.SendAsync(model.PhoneNumber, $"Your login verification code is: {verifyToken}");
+            return (verifyToken, result);
         }
 
-	    private Dictionary<string, string> GetBody((string Token, bool Result) response, string resendToken)
+	    private Dictionary<string, string> GetBody(string verifyToken, string resendToken)
 	    {
 		    var body = new Dictionary<string, string> { { "resend_token", resendToken } };
-		    if (_configuration["ReturnVerifyToken"] == bool.TrueString)
-			    body.Add("token", response.Token);
+	        if (_configuration["ReturnVerifyTokenForTesting"] == bool.TrueString)
+	        {
+	            body.Add("verify_token", verifyToken);
+	        }
 		    return body;
 	    }
 	}

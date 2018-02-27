@@ -8,7 +8,7 @@ using Polly;
 
 namespace IdentityServer4.PhoneNumberAuth
 {
-	public static class IWebHostExtensions
+	public static class WebHostExtensions
 	{
 		public static IWebHost MigrateDbContext<TContext>(this IWebHost webHost, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
 		{

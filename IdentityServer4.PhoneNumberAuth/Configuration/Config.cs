@@ -37,7 +37,8 @@ namespace IdentityServer4.PhoneNumberAuth.Configuration
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.OfflineAccess
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "myapi"
                     },
                     AllowOfflineAccess = true
                 }
