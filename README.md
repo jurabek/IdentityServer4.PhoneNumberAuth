@@ -5,9 +5,9 @@ To be able to test locally change `"ReturnVerifyTokenForTesting : true"` on `app
 
 ```console
 $ curl -H "Content-Type: application/json" \ 
-       -X POST \ 
-       -d '{"phone":"+198989822"}' \ 
-        http://localhost:62537/api/verify_phone_number
+$      -X POST \ 
+$      -d '{"phone":"+198989822"}' \ 
+$      http://localhost:62537/api/verify_phone_number
 ```
 ```json
 {
@@ -20,8 +20,8 @@ Authentication by verification token
 
 ```console
 $ curl -H "Content-Type: application/x-www-form-urlencoded" \
-        -X POST \ 
-        -d grant_type=phone_number_token&client_id=phone_number_authentication&client_secret=secret&phone_number=+198989822&verification_token=373635 \ 
+$        -X POST \ 
+$        -d grant_type=phone_number_token&client_id=phone_number_authentication&client_secret=secret&phone_number=+198989822&verification_token=373635 \ 
         http://localhost:62537/connect/token
 ```
 
@@ -38,7 +38,7 @@ Test your api controller by Bearer token
 
 ```console
 $ curl -i http://localhost:62732/api/Identity \
-       -H "Authorization: Bearer CfDJ8F2fHxOfr9xAtc......"
+$      -H "Authorization: Bearer CfDJ8F2fHxOfr9xAtc......"
 ```
 
 ```json
