@@ -37,6 +37,6 @@ curl -i http://localhost:62732/api/Identity -H "Authorization: Bearer CfDJ8F2fHx
 ```json
 {
     "type": "phone_number",
-    "value": "+78888888"
+    "value": "+198989822"
 }
 ```
