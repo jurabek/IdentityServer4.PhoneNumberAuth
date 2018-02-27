@@ -1,7 +1,7 @@
 # IdentityServer4.PhoneNumberAuth
 Sample phone authentication with IdentityServer4 in ASP.NET Core 2.0 
 
-To be able to test locally change `"ReturnVerifyTokenForTesting : true"` on `appsettings.json` it will returns us `verify_token` on response, however production it should be false and you should implement real SMS service.
+To be able to test locally change `"ReturnVerifyTokenForTesting : true"` on `appsettings.json` it will returns us `verify_token` on response, however in production it should be false and you should implement real SMS service.
 
 ```console
 $ curl -H "Content-Type: application/json" -X POST -d '{"phone":"+198989822"}' http://localhost:62537/api/verify_phone_number
