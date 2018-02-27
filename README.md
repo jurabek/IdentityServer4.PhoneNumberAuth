@@ -31,7 +31,7 @@ $ curl -H "Content-Type: application/x-www-form-urlencoded" -X POST -d grant_typ
 Test your api controller by Bearer token
 
 ```console
-curl -i http://localhost:62732/api/Identity -H "Authorization: Bearer CfDJ8F2fHxOfr9xAtc......"
+$ curl -i http://localhost:62732/api/Identity -H "Authorization: Bearer CfDJ8F2fHxOfr9xAtc......"
 ```
 
 ```json
