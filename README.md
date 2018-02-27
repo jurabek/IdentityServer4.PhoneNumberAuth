@@ -22,7 +22,7 @@ Authentication by verification token
 curl -H "Content-Type: application/x-www-form-urlencoded" \
      -X POST \ 
      -d grant_type=phone_number_token&client_id=phone_number_authentication&client_secret=secret&phone_number=+198989822&verification_token=373635 \ 
-        http://localhost:62537/connect/token
+      http://localhost:62537/connect/token
 ```
 
 ```json
