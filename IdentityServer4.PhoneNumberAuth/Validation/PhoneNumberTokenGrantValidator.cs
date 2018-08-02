@@ -20,7 +20,8 @@ namespace IdentityServer4.PhoneNumberAuth.Validation
 		private readonly IEventService _events;
 		private readonly ILogger<PhoneNumberTokenGrantValidator> _logger;
 
-		public PhoneNumberTokenGrantValidator(PhoneNumberTokenProvider<ApplicationUser> phoneNumberTokenProvider,
+		public PhoneNumberTokenGrantValidator(
+			PhoneNumberTokenProvider<ApplicationUser> phoneNumberTokenProvider,
 			UserManager<ApplicationUser> userManager,
 			SignInManager<ApplicationUser> signInManager,
 			IEventService events,
@@ -38,56 +39,54 @@ namespace IdentityServer4.PhoneNumberAuth.Validation
 			var createUser = false;
 			var raw = context.Request.Raw;
 			var credential = raw.Get(OidcConstants.TokenRequest.GrantType);
-			if (credential != null && credential == Constants.AuthConstants.GrantType.PhoneNumberToken)
-			{
-				var phoneNumber = raw.Get(Constants.AuthConstants.TokenRequest.PhoneNumber);
-				var verificationToken = raw.Get(Constants.AuthConstants.TokenRequest.Token);
-
-				var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == _userManager.NormalizeKey(phoneNumber));
-				if (user == null)
-				{
-					user = new ApplicationUser
-					{
-						UserName = phoneNumber,
-						PhoneNumber = phoneNumber,
-						SecurityStamp = phoneNumber.Sha256()
-					};
-					createUser = true;
-				}
-
-				var result = await _phoneNumberTokenProvider.ValidateAsync("verify_number", verificationToken, _userManager, user);
-				if (result)
-				{
-					if (createUser)
-					{
-						user.PhoneNumberConfirmed = true;
-						var resultCreation = await _userManager.CreateAsync(user);
-						if (resultCreation != IdentityResult.Success)
-						{
-							_logger.LogInformation("User creation failed: {username}, reason: invalid user", phoneNumber);
-							await _events.RaiseAsync(new UserLoginFailureEvent(phoneNumber, resultCreation.Errors.Select(x => x.Description).Aggregate((a, b) => a + ", " + b), false));
-							return;
-						}
-					}
-
-					_logger.LogInformation("Credentials validated for username: {phoneNumber}", phoneNumber);
-					await _events.RaiseAsync(new UserLoginSuccessEvent(phoneNumber, user.Id, phoneNumber, false));
-					await _signInManager.SignInAsync(user, true);
-					context.Result = new GrantValidationResult(user.Id, OidcConstants.AuthenticationMethods.ConfirmationBySms);
-				}
-				else
-				{
-					_logger.LogInformation("Authentication failed for token: {token}, reason: invalid token", verificationToken);
-					await _events.RaiseAsync(new UserLoginFailureEvent(verificationToken, "invalid token or verification id", false));
-				}
-			}
-			else
+			if (credential == null || credential != Constants.AuthConstants.GrantType.PhoneNumberToken)
 			{
 				context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "invalid verify_phone_number_token credential");
+				return;
 			}
+			
+			var phoneNumber = raw.Get(Constants.AuthConstants.TokenRequest.PhoneNumber);
+			var verificationToken = raw.Get(Constants.AuthConstants.TokenRequest.Token);
+
+			var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == _userManager.NormalizeKey(phoneNumber));
+			if (user == null)
+			{
+				user = new ApplicationUser
+				{
+					UserName = phoneNumber,
+					PhoneNumber = phoneNumber,
+					SecurityStamp = phoneNumber.Sha256()
+				};
+				createUser = true;
+			}
+
+			var result = await _phoneNumberTokenProvider.ValidateAsync("verify_number", verificationToken, _userManager, user);
+			if (!result)
+			{
+					
+				_logger.LogInformation("Authentication failed for token: {token}, reason: invalid token", verificationToken);
+				await _events.RaiseAsync(new UserLoginFailureEvent(verificationToken, "invalid token or verification id", false));
+				return;
+			}
+			
+			if (createUser)
+			{
+				user.PhoneNumberConfirmed = true;
+				var resultCreation = await _userManager.CreateAsync(user);
+				if (resultCreation != IdentityResult.Success)
+				{
+					_logger.LogInformation("User creation failed: {username}, reason: invalid user", phoneNumber);
+					await _events.RaiseAsync(new UserLoginFailureEvent(phoneNumber, resultCreation.Errors.Select(x => x.Description).Aggregate((a, b) => a + ", " + b), false));
+					return;
+				}
+			}
+
+			_logger.LogInformation("Credentials validated for username: {phoneNumber}", phoneNumber);
+			await _events.RaiseAsync(new UserLoginSuccessEvent(phoneNumber, user.Id, phoneNumber, false));
+			await _signInManager.SignInAsync(user, true);
+			context.Result = new GrantValidationResult(user.Id, OidcConstants.AuthenticationMethods.ConfirmationBySms);
 		}
 
 		public string GrantType => Constants.AuthConstants.GrantType.PhoneNumberToken;
 	}
 }
-

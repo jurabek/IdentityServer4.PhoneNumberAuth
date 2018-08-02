@@ -3,12 +3,11 @@ using Xunit;
 
 namespace IdentityServer4.PhoneNumberAuth.IntegrationTests
 {
-    public class UnitTest1
+    public class VerifyPhoneNumberControllerTests
     {
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

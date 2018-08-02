@@ -15,50 +15,56 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
     [Route("api/verify_phone_number")]
     public class VerifyPhoneNumberController : ControllerBase
     {
-	    private readonly IConfiguration _configuration;
-	    private readonly ISmsService _smsService;
+        private readonly IConfiguration _configuration;
+        private readonly ISmsService _smsService;
         private readonly DataProtectorTokenProvider<ApplicationUser> _dataProtectorTokenProvider;
         private readonly PhoneNumberTokenProvider<ApplicationUser> _phoneNumberTokenProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public VerifyPhoneNumberController(
-			IConfiguration configuration,
-			ISmsService smsService,
+            IConfiguration configuration,
+            ISmsService smsService,
             DataProtectorTokenProvider<ApplicationUser> dataProtectorTokenProvider,
             PhoneNumberTokenProvider<ApplicationUser> phoneNumberTokenProvider,
             UserManager<ApplicationUser> userManager)
         {
-	        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-	        _smsService = smsService ?? throw new ArgumentNullException(nameof(smsService));
-            _dataProtectorTokenProvider = dataProtectorTokenProvider ?? throw new ArgumentNullException(nameof(dataProtectorTokenProvider));
-            _phoneNumberTokenProvider = phoneNumberTokenProvider ?? throw new ArgumentNullException(nameof(phoneNumberTokenProvider));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+            _smsService = smsService ?? throw new ArgumentNullException(nameof(smsService));
+
+            _dataProtectorTokenProvider = dataProtectorTokenProvider
+                                          ?? throw new ArgumentNullException(nameof(dataProtectorTokenProvider));
+
+            _phoneNumberTokenProvider = phoneNumberTokenProvider
+                                        ?? throw new ArgumentNullException(nameof(phoneNumberTokenProvider));
+
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]PhoneLoginViewModel model)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+        public async Task<IActionResult> Post([FromBody] PhoneLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-			var user = await GetUser(model);
-			var response = await SendSmsRequet(model, user);
+            var user = await GetUser(model);
+            var response = await SendSmsRequet(model, user);
 
-			if (!response.Result)
-			{
-				return BadRequest("Sending sms failed");
-			}
+            if (!response.Result)
+            {
+                return BadRequest("Sending sms failed");
+            }
 
-			var resendToken = await _dataProtectorTokenProvider.GenerateAsync("resend_token", _userManager, user);
-			var body = GetBody(response.VerifyToken, resendToken);
+            var resendToken = await _dataProtectorTokenProvider.GenerateAsync("resend_token", _userManager, user);
+            var body = GetBody(response.VerifyToken, resendToken);
 
-			return Accepted(body);
-		}
+            return Accepted(body);
+        }
 
-		[HttpPut]
-        public async Task<IActionResult> Put(string resendToken, [FromBody]PhoneLoginViewModel model)
+        [HttpPut]
+        public async Task<IActionResult> Put(string resendToken, [FromBody] PhoneLoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -79,37 +85,40 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
             }
 
             var newResendToken = await _dataProtectorTokenProvider.GenerateAsync("resend_token", _userManager, user);
-			var body = GetBody(response.VerifyToken, newResendToken);
-			return Accepted(body);
+            var body = GetBody(response.VerifyToken, newResendToken);
+            return Accepted(body);
         }
 
         private async Task<ApplicationUser> GetUser(PhoneLoginViewModel loginViewModel)
         {
             var phoneNumber = _userManager.NormalizeKey(loginViewModel.PhoneNumber);
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber) 
-                ?? new ApplicationUser
-                {
-                    PhoneNumber = loginViewModel.PhoneNumber,
-                    SecurityStamp = loginViewModel.PhoneNumber.Sha256()
-                };
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber)
+                       ?? new ApplicationUser
+                       {
+                           PhoneNumber = loginViewModel.PhoneNumber,
+                           SecurityStamp = loginViewModel.PhoneNumber.Sha256()
+                       };
             return user;
         }
 
-        private async Task<(string VerifyToken, bool Result)> SendSmsRequet(PhoneLoginViewModel model, ApplicationUser user)
+        private async Task<(string VerifyToken, bool Result)> SendSmsRequet(PhoneLoginViewModel model,
+            ApplicationUser user)
         {
             var verifyToken = await _phoneNumberTokenProvider.GenerateAsync("verify_number", _userManager, user);
-            var result = await _smsService.SendAsync(model.PhoneNumber, $"Your login verification code is: {verifyToken}");
+            var result =
+                await _smsService.SendAsync(model.PhoneNumber, $"Your login verification code is: {verifyToken}");
             return (verifyToken, result);
         }
 
-	    private Dictionary<string, string> GetBody(string verifyToken, string resendToken)
-	    {
-		    var body = new Dictionary<string, string> { { "resend_token", resendToken } };
-	        if (_configuration["ReturnVerifyTokenForTesting"] == bool.TrueString)
-	        {
-	            body.Add("verify_token", verifyToken);
-	        }
-		    return body;
-	    }
-	}
+        private Dictionary<string, string> GetBody(string verifyToken, string resendToken)
+        {
+            var body = new Dictionary<string, string> {{"resend_token", resendToken}};
+            if (_configuration["ReturnVerifyTokenForTesting"] == bool.TrueString)
+            {
+                body.Add("verify_token", verifyToken);
+            }
+
+            return body;
+        }
+    }
 }

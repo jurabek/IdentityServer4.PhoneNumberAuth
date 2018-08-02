@@ -23,10 +23,11 @@ namespace IdentityServer4.PhoneNumberAuth
 		
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var connectionString = _configuration["ConnectionString"];
 			services.AddTransient<ISmsService, SmsService>();
 			services.AddDbContext<ApplicationDbContext>(options =>
 			{
-				options.UseSqlServer(_configuration["SqlServerConnectionString"]);
+				options.UseNpgsql(connectionString);
 			});
 
 			services.AddIdentity<ApplicationUser, IdentityRole>()
