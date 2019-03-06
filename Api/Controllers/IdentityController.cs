@@ -11,7 +11,7 @@ namespace Api.Controllers
         [Authorize]
         public IActionResult Get()
         {
-            return Json(User.Claims.Where(x => x.Type == "phone_number").Select(x => new { x.Type, x.Value }));
+            return Json(User.Claims.Where(x => x.Type == "phone_number").Select(x => new {x.Type, x.Value}));
         }
     }
 }

@@ -12,52 +12,49 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityServer4.PhoneNumberAuth
 {
-	public class Startup
-	{
-		private readonly IConfiguration _configuration;
+    public class Startup
+    {
+        private readonly IConfiguration _configuration;
 
-		public Startup(IConfiguration configuration)
-		{
-			_configuration = configuration;
-		}
-		
-		public void ConfigureServices(IServiceCollection services)
-		{
-			var connectionString = _configuration["ConnectionString"];
-			services.AddTransient<ISmsService, SmsService>();
-			services.AddDbContext<ApplicationDbContext>(options =>
-			{
-				options.UseNpgsql(connectionString);
-			});
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-			services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
+        public void ConfigureServices(IServiceCollection services)
+        {
+            var connectionString = _configuration["ConnectionString"];
+            services.AddTransient<ISmsService, SmsService>();
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connectionString); });
 
-			services.AddMvc();
-			services.AddIdentityServer(options =>
-				{
-					options.Events.RaiseErrorEvents = true;
-					options.Events.RaiseFailureEvents = true;
-				})
-				.AddExtensionGrantValidator<PhoneNumberTokenGrantValidator>()
-				.AddDeveloperSigningCredential()
-				.AddInMemoryApiResources(Config.GetApiResources())
-				.AddInMemoryIdentityResources(Config.GetIdentityResources())
-				.AddInMemoryClients(Config.GetClients())
-				.AddAspNetIdentity<ApplicationUser>();
-		}
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+            services.AddMvc();
+            services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                })
+                .AddExtensionGrantValidator<PhoneNumberTokenGrantValidator>()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<ApplicationUser>();
+        }
 
-			app.UseIdentityServer();
-			app.UseMvc();
-			app.UseMvcWithDefaultRoute();
-		}
-	}
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseIdentityServer();
+            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
+        }
+    }
 }

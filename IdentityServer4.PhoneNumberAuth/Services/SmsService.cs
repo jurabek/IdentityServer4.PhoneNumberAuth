@@ -6,7 +6,7 @@ namespace IdentityServer4.PhoneNumberAuth.Services
     {
         public Task<bool> SendAsync(string phoneNumber, string body)
         {
-	        return Task.FromResult(true);
+            return Task.FromResult(true);
         }
     }
 }

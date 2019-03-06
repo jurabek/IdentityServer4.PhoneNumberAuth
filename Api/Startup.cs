@@ -13,7 +13,7 @@ namespace Api
         {
             _configuration = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore()
@@ -29,7 +29,7 @@ namespace Api
                     options.ApiName = "myapi";
                 });
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseAuthentication();
