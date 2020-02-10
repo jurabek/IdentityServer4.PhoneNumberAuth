@@ -57,7 +57,7 @@ namespace IdentityServer4.PhoneNumberAuth.Validation
                 {
                     UserName = phoneNumber,
                     PhoneNumber = phoneNumber,
-                    SecurityStamp = phoneNumber.Sha256()
+                    SecurityStamp = new Secret("your_secret_key").Value + phoneNumber.Sha256()
                 };
                 createUser = true;
             }

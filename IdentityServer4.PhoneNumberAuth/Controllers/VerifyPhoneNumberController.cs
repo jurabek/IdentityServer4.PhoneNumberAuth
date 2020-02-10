@@ -96,7 +96,7 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
                        ?? new ApplicationUser
                        {
                            PhoneNumber = loginViewModel.PhoneNumber,
-                           SecurityStamp = loginViewModel.PhoneNumber.Sha256()
+                           SecurityStamp = new Secret("your_secret_key").Value + loginViewModel.PhoneNumber.Sha256()
                        };
             return user;
         }
