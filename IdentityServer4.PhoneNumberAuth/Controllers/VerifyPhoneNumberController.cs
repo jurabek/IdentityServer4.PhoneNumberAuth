@@ -91,7 +91,7 @@ namespace IdentityServer4.PhoneNumberAuth.Controllers
 
         private async Task<ApplicationUser> GetUser(PhoneLoginViewModel loginViewModel)
         {
-            var phoneNumber = _userManager.NormalizeKey(loginViewModel.PhoneNumber);
+            var phoneNumber = _userManager.NormalizeName(loginViewModel.PhoneNumber);
             var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber)
                        ?? new ApplicationUser
                        {

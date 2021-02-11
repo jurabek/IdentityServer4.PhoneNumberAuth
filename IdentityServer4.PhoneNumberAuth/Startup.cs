@@ -31,7 +31,9 @@ namespace IdentityServer4.PhoneNumberAuth
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddControllersWithViews();
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
+              opts => { opts.ResourcesPath = "Resources"; }).AddDataAnnotationsLocalization();
             services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
@@ -52,9 +54,14 @@ namespace IdentityServer4.PhoneNumberAuth
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
             app.UseIdentityServer();
-            app.UseMvc();
-            app.UseMvcWithDefaultRoute();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute()
+                    .RequireAuthorization();
+            });
         }
     }
 }

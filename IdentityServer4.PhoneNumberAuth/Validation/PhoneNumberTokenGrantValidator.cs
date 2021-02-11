@@ -50,7 +50,7 @@ namespace IdentityServer4.PhoneNumberAuth.Validation
             var verificationToken = raw.Get(Constants.AuthConstants.TokenRequest.Token);
 
             var user = await _userManager.Users.SingleOrDefaultAsync(x =>
-                x.PhoneNumber == _userManager.NormalizeKey(phoneNumber));
+                x.PhoneNumber == _userManager.NormalizeName(phoneNumber));
             if (user == null)
             {
                 user = new ApplicationUser
