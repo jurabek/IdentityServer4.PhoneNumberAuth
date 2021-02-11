@@ -1,12 +1,12 @@
 # IdentityServer4.PhoneNumberAuth
-Sample passwordless phone number authentication with IdentityServer4 in ASP.NET Core 2.0 
+Sample passwordless phone number authentication with IdentityServer4 in ASP.NET Core 3.1
 
 > NOTE: To be able to test locally you can change `"ReturnVerifyTokenForTesting : true"` on `appsettings.json` it will returns us `verify_token` on response, however in production usages it must be removed and you should add real SMS service (Twilio, Nexmo, etc..) by implementing `ISmsServices`
 
 ```console
 curl -H "Content-Type: application/json" \ 
      -X POST \ 
-     -d '{"phone":"+198989822"}' \ 
+     -d '{"phonenumber":"+198989822"}' \ 
      http://localhost:62537/api/verify_phone_number
 ```
 ```json
@@ -21,7 +21,7 @@ Authentication by verification token
 ```console
 curl -H "Content-Type: application/x-www-form-urlencoded" \
      -X POST \ 
-     -d grant_type=phone_number_token&client_id=phone_number_authentication&client_secret=secret&phone_number=+198989822&verification_token=373635 \ 
+     -d 'grant_type=phone_number_token&client_id=phone_number_authentication&client_secret=secret&phone_number=%2B198989822&verification_token=373635' \ 
       http://localhost:62537/connect/token
 ```
 

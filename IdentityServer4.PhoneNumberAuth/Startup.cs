@@ -6,6 +6,7 @@ using IdentityServer4.PhoneNumberAuth.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,9 @@ namespace IdentityServer4.PhoneNumberAuth
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddControllersWithViews();
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
+              opts => { opts.ResourcesPath = "Resources"; }).AddDataAnnotationsLocalization();
             services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
@@ -52,9 +55,14 @@ namespace IdentityServer4.PhoneNumberAuth
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
             app.UseIdentityServer();
-            app.UseMvc();
-            app.UseMvcWithDefaultRoute();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute()
+                    .RequireAuthorization();
+            });
         }
     }
 }
