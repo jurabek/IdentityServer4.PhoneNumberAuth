@@ -33,7 +33,7 @@ namespace SampleClient
 
             var contentObject = JsonConvert.SerializeObject(new Dictionary<string, string>
             {
-                {"phone", "+198989822"}
+                {"phonenumber", "+198989822"}
             });
 
             var stringContent = new StringContent(contentObject, Encoding.UTF8, "application/json");
