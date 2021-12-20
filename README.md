@@ -1,7 +1,7 @@
 # IdentityServer4.PhoneNumberAuth
 Sample passwordless phone number authentication with IdentityServer4 in ASP.NET Core 3.1
 
-> ATTENTION: This implementation is not fully rfc6749 complient, for creating custom `grant_type`'s follow instructions [here in rfc6749 documentation](https://datatracker.ietf.org/doc/html/rfc6749#page-51)
+> ATTENTION: This implementation is not fully rfc6749 complient, for creating custom `grant_type`'s follow instructions [in section 8.3](https://datatracker.ietf.org/doc/html/rfc6749#section-8.3)
 
 > NOTE: To be able to test locally you can change `"ReturnVerifyTokenForTesting : true"` on `appsettings.json` it will returns us `verify_token` on response, however in production usages it must be removed and you should add real SMS service (Twilio, Nexmo, etc..) by implementing `ISmsServices`
 
