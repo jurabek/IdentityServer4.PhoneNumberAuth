@@ -1,5 +1,5 @@
+image: gitpod/workspace-dotnet
+
 tasks:
   - init: |
-      echo 'TODO: build project'
-    command: |
-      echo 'TODO: start app'
+      dotnet build IdentityServer4.PhoneNumberAuth.sln
