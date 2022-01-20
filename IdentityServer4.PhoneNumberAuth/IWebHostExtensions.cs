@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace IdentityServer4.PhoneNumberAuth
                 {
                     logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");
 
-                    var retry = Policy.Handle<System.Data.Common.DBException>()
+                    var retry = Policy.Handle<DbException>()
                         .WaitAndRetry(new[]
                         {
                             TimeSpan.FromSeconds(5),
