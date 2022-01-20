@@ -3,3 +3,7 @@ image: gitpod/workspace-dotnet
 tasks:
   - init: |
       dotnet build IdentityServer4.PhoneNumberAuth.sln
+
+vscode:
+  extensions:
+    - muhammad-sammy.csharp
