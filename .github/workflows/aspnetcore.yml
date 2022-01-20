@@ -12,6 +12,6 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        version: 2.2.108
+        version: 3.1.x
     - name: Build with dotnet
       run: dotnet build IdentityServer4.PhoneNumberAuth.sln --configuration Release
