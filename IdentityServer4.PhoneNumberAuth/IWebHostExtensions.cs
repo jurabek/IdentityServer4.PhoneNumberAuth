@@ -25,7 +25,7 @@ namespace IdentityServer4.PhoneNumberAuth
                 {
                     logger.LogInformation($"Migrating database associated with context {typeof(TContext).Name}");
 
-                    var retry = Policy.Handle<DBException>()
+                    var retry = Policy.Handle<System.Data.Common.DBException>()
                         .WaitAndRetry(new[]
                         {
                             TimeSpan.FromSeconds(5),
